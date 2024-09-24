@@ -2,11 +2,8 @@ import 'package:districorp/widgets/UserItem_caja.dart';
 import 'package:districorp/widgets/add_user.dart';
 import 'package:districorp/widgets/update_user.dart';
 import 'package:flutter/material.dart';
-
 import 'package:districorp/widgets/custom_button.dart';
 import 'package:districorp/widgets/gradient_appbar.dart';
-
-
 class AdminUserManagementPage extends StatefulWidget {
   @override
   _AdminUserManagementPageState createState() => _AdminUserManagementPageState();
@@ -65,7 +62,7 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
                     );
                   },
                   onDelete: () {
-                    // Aquí implementas la acción de eliminar el usuario
+                    // implementar para eliminar usuarios
                   },
                 );
               },

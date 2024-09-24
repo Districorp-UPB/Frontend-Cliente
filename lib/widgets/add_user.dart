@@ -41,13 +41,12 @@ class AddUserPage extends StatelessWidget {
               hintText: 'Contraseña',
               icon: Icons.lock,
               controller: passwordController,
-              isPassword: true,  // Asegúrate de que la contraseña esté oculta
+              isPassword: true,  
             ),
             const SizedBox(height: 24),
             CustomButton(
               text: 'Guardar',
               onPressed: () {
-                // Implementar la lógica de agregar usuario aquí
                 print('Usuario agregado: ${nameController.text}, ${emailController.text}, ${phoneController.text}, ${passwordController.text}');
               },
             ),

@@ -16,11 +16,18 @@ class SearchBar extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       decoration: InputDecoration(
-        hintText: 'Buscar por correo...',
-        prefixIcon: const Icon(Icons.search),
+        hintText: 'Buscar usuarios...',
+        hintStyle: TextStyle(color: Colors.grey), 
+        prefixIcon: const Icon(
+          Icons.search,
+          color: Colors.black, 
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey), 
         ),
+        filled: true, 
+        fillColor: Colors.white, 
       ),
     );
   }

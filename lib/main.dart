@@ -1,5 +1,5 @@
-import 'package:districorp/screen/admin/AdminUserManagementPage.dart';
-import 'package:flutter/material.dart';// Importa la vista de login
+import 'package:districorp/screen/admin/Panel_principal_admin.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: AdminUserManagementPage(),
+      home: MainPanelPage(),
     );
   }
 }

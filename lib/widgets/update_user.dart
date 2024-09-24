@@ -44,7 +44,6 @@ class UpdateUserPage extends StatelessWidget {
             CustomButton(
               text: 'Actualizar',
               onPressed: () {
-                // Aquí implementas la lógica de actualizar usuario
                 print('Usuario actualizado: ${nameController.text}, ${emailController.text}, ${phoneController.text}');
               },
             ),
