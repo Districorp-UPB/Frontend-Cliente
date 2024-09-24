@@ -65,7 +65,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/   # Aquí defines la carpeta assets entera, para poder referenciar todas las imágenes dentro.
-    - assets/logo3.png  # Puedes listar la imagen o solo dejar la carpeta, si hay múltiples imágenes.
+    - assets/logo_3.png  # Puedes listar la imagen o solo dejar la carpeta, si hay múltiples imágenes.
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
