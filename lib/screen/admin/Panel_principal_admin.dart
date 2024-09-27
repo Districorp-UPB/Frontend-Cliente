@@ -1,19 +1,23 @@
+import 'package:districorp/screen/login_screen.dart';
 import 'package:districorp/widgets/OptionCard.dart';
 import 'package:flutter/material.dart';
 import 'package:districorp/widgets/gradient_appbar.dart';
 import 'package:districorp/screen/admin/AdminUserManagementPage.dart';
+import 'package:get/get.dart';
 
 class MainPanelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GradientAppBar(
+        implyLeading: false,
         title: 'Panel Principal',
         actions: [
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               print('Logout');
+              Get.to(() => const LoginScreen());
             },
           ),
         ],

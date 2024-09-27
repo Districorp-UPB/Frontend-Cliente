@@ -4,22 +4,26 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color titleColor;
   final List<Widget>? actions; // Add the actions parameter
+  final bool implyLeading;
 
   const GradientAppBar({
     super.key, 
     required this.title,
     this.titleColor = Colors.white,
     this.actions, // Initialize the actions parameter
+    required this.implyLeading, 
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: implyLeading,
       title: Text(
         title,
         style: TextStyle(color: titleColor),
       ),
       actions: actions, // Use the actions in the AppBar
+      iconTheme: IconThemeData(color: titleColor),
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

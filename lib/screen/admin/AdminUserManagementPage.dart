@@ -4,14 +4,20 @@ import 'package:districorp/widgets/update_user.dart';
 import 'package:flutter/material.dart';
 import 'package:districorp/widgets/custom_button.dart';
 import 'package:districorp/widgets/gradient_appbar.dart';
+
 class AdminUserManagementPage extends StatefulWidget {
   @override
-  _AdminUserManagementPageState createState() => _AdminUserManagementPageState();
+  _AdminUserManagementPageState createState() =>
+      _AdminUserManagementPageState();
 }
 
 class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
   final TextEditingController searchController = TextEditingController();
-  final List<String> users = ['user1@example.com', 'user2@example.com', 'user3@example.com'];
+  final List<String> users = [
+    'user1@example.com',
+    'user2@example.com',
+    'user3@example.com'
+  ];
   List<String> filteredUsers = [];
 
   @override
@@ -34,17 +40,34 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: GradientAppBar(
+        implyLeading: false,
         title: 'Gestión de Usuarios',
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: SearchBar(
-              controller: searchController,
-              onChanged: filterUsers,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SearchBar(
+
+                  controller: searchController,
+                  onChanged: filterUsers,
+                  hintText: 'Buscar usuarios...',
+                  hintStyle: WidgetStateProperty.all<TextStyle>(
+                      TextStyle(color: Colors.grey)),
+                ),
+                Positioned(
+                    right: size.width * 0.05,
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    )),
+              ],
             ),
           ),
           Expanded(
@@ -57,7 +80,8 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UpdateUserPage(email: filteredUsers[index]),
+                        builder: (context) =>
+                            UpdateUserPage(email: filteredUsers[index]),
                       ),
                     );
                   },

@@ -17,6 +17,7 @@ class UpdateUserPage extends StatelessWidget {
 
     return Scaffold(
       appBar: GradientAppBar(
+        implyLeading: false,
         title: 'Actualizar Usuario',
       ),
       body: Padding(

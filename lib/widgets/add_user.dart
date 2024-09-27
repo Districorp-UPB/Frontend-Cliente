@@ -13,6 +13,7 @@ class AddUserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GradientAppBar(
+        implyLeading: false,
         title: 'Agregar Usuario',
       ),
       body: Padding(
