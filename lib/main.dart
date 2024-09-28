@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
       ],
       child: GetMaterialApp(
         scrollBehavior: MyBehavior(),
-        title: 'Login',
         debugShowCheckedModeBanner: false,
         initialRoute: 'Employee',
         theme: ThemeData(

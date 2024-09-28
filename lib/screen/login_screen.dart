@@ -15,6 +15,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Inicializamos una variable para controlar la visibilidad de la contraseña
+  bool visiIcon = false;
+
   void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
@@ -32,6 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
       print("Por favor ingresa todos los campos");
     }
   }
+
+
+  visibilityIcon() {
+    setState(() {
+      visiIcon = !visiIcon;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +80,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                 ),
                 const SizedBox(height: 20),
-                CustomInput(
-                  hintText: 'Contraseña',
-                  icon: Icons.lock,
-                  isPassword: true,
-                  controller: _passwordController,
-                ),
+                TextField(
+                    controller: _passwordController,
+                    obscureText: visiIcon ? false : true,
+                    decoration: InputDecoration(
+                      hintText: 'Contraseña',
+                      prefixIcon: Icon(Icons.lock),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      suffixIcon: IconButton(
+                    splashColor: Colors.transparent,
+                    onPressed: () {
+                      visibilityIcon();
+                    },
+                    icon: visiIcon
+                        ? const Icon(
+                            Icons.remove_red_eye_sharp,
+                          )
+                        : const Icon(Icons.visibility_off))
+                    ),
+                    
+                  ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
