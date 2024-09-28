@@ -1,7 +1,4 @@
 import 'package:districorp/constant/sizes.dart';
-import 'package:districorp/screen/admin/AdminUserManagementPage.dart';
-import 'package:districorp/widgets/OptionCard.dart';
-import 'package:districorp/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeHome extends StatelessWidget {
@@ -10,40 +7,43 @@ class EmployeeHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InfoCard(
-              size: size,
-              titulo: "Streaming",
-              subContenido:
-                  "Transmite videos y audios sin necesidad de descargarlos. Reproduce tu contenido multimedia.",
-              imageUrl: "assets/playimage.jpg",
-              txtbtn: 'Mirar',
-            ),
-            const SizedBox(height: 30),
-            InfoCard(
-              size: size,
-              titulo: "Photo Album",
-              subContenido:
-                  "Organiza y guarda tus fotos en álbumes digitales accesibles desde cualquier dispositivo.",
-              imageUrl: "assets/photo_album.png",
-              txtbtn: "Ingresar",
-            ),
-            const SizedBox(height: 30),
-            InfoCard(
-              size: size,
-              titulo: "Files",
-              subContenido:
-                  "Gestiona, sube y comparte archivos con tus compañeros de trabajo.",
-              imageUrl: "assets/files.png",
-              txtbtn: "Ingresar",
-            )
-          ],
+    return SingleChildScrollView(
+      
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InfoCard(
+                size: size,
+                titulo: "Streaming",
+                subContenido:
+                    "Transmite videos y audios sin necesidad de descargarlos. Reproduce tu contenido multimedia.",
+                imageUrl: "assets/playimage.jpg",
+                txtbtn: 'Mirar',
+              ),
+              const SizedBox(height: 30),
+              InfoCard(
+                size: size,
+                titulo: "Photo Album",
+                subContenido:
+                    "Organiza y guarda tus fotos en álbumes digitales accesibles desde cualquier dispositivo.",
+                imageUrl: "assets/photo_album.png",
+                txtbtn: "Ingresar",
+              ),
+              const SizedBox(height: 30),
+              InfoCard(
+                size: size,
+                titulo: "Shared Files",
+                subContenido:
+                    "Gestiona, sube y comparte archivos con tus compañeros de trabajo.",
+                imageUrl: "assets/files.png",
+                txtbtn: "Ingresar",
+              )
+            ],
+          ),
         ),
       ),
     );

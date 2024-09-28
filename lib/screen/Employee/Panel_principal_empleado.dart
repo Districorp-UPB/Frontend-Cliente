@@ -1,11 +1,9 @@
 import 'package:districorp/constant/sizes.dart';
 import 'package:districorp/providers/Emp_dashboard_provider.dart';
 import 'package:districorp/screen/login_screen.dart';
-import 'package:districorp/widgets/OptionCard.dart';
 import 'package:districorp/widgets/Employee_widgets/drawer_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:districorp/widgets/gradient_appbar.dart';
-import 'package:districorp/screen/admin/AdminUserManagementPage.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
@@ -56,6 +54,8 @@ class _EmployeePanelPageState extends State<EmployeePanelPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        employeeProvider.updateSelectedIndex(0);
+
                         Navigator.pop(context);
                       },
                       child: Image(
@@ -155,8 +155,7 @@ class EmpDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        physics: ClampingScrollPhysics(), child: widgetScreensOptions);
+    return widgetScreensOptions;
   }
 }
 

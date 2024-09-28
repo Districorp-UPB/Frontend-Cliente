@@ -1,3 +1,4 @@
+import 'package:districorp/widgets/SearchBarCustom.dart';
 import 'package:districorp/widgets/UserItem_caja.dart';
 import 'package:districorp/widgets/add_user.dart';
 import 'package:districorp/widgets/update_user.dart';
@@ -40,7 +41,7 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: GradientAppBar(
         implyLeading: false,
@@ -50,25 +51,7 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                SearchBar(
-
-                  controller: searchController,
-                  onChanged: filterUsers,
-                  hintText: 'Buscar usuarios...',
-                  hintStyle: WidgetStateProperty.all<TextStyle>(
-                      TextStyle(color: Colors.grey)),
-                ),
-                Positioned(
-                    right: size.width * 0.05,
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    )),
-              ],
-            ),
+            child: SearchBarCustom(controller: searchController, onChanged: filterUsers, hintext: 'Buscar usuarios...')
           ),
           Expanded(
             child: ListView.builder(
