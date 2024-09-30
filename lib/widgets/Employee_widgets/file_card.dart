@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class VideoCard extends StatelessWidget {
+class FileCard extends StatelessWidget {
   final String title;
-  final String imageUrl;
+  final String fileUrl; // Este es el archivo, no necesariamente una imagen
 
-  const VideoCard({required this.title, required this.imageUrl});
+  const FileCard({required this.title, required this.fileUrl});
+
+  bool isImage(String url) {
+    // Simple función para verificar si el archivo es una imagen (puedes mejorarlo)
+    return url.endsWith('.jpg') || url.endsWith('.png');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +22,25 @@ class VideoCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.fitHeight,
-              width: double.infinity,
-              height: double.infinity,
-            ),
+            child: isImage(fileUrl)
+                ? Image.asset(
+                    fileUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                : Container(
+                    color: Colors.grey[300], // Fondo gris si no es imagen
+                    child: Center(
+                      child: Icon(
+                        Icons.insert_drive_file, // Ícono genérico de archivo
+                        size: 100,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
           ),
-          // Nombre del video en la parte inferior
+          // Nombre del archivo en la parte superior
           Positioned(
             top: 0,
             left: 0,
@@ -45,8 +61,7 @@ class VideoCard extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        overflow: TextOverflow
-                            .ellipsis, // Para manejar el texto largo
+                        overflow: TextOverflow.ellipsis, // Para manejar el texto largo
                       ),
                       maxLines: 1, // Asegura que no crezca verticalmente
                     ),
@@ -82,32 +97,6 @@ class VideoCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(235, 2, 56, 1),
-                    Color.fromRGBO(120, 50, 220, 1)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  // Acción del botón de play
-                },
-                icon: Icon(
-                  Icons.play_circle_fill,
-                  color: Colors.white,
-                  size: 45,
-                ),
               ),
             ),
           ),

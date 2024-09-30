@@ -1,5 +1,7 @@
 import 'package:districorp/constant/sizes.dart';
+import 'package:districorp/providers/Emp_dashboard_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeHome extends StatelessWidget {
   const EmployeeHome({super.key});
@@ -7,8 +9,8 @@ class EmployeeHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final employeeProvider = Provider.of<EmpDashboardProvider>(context);
     return SingleChildScrollView(
-      
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -23,6 +25,9 @@ class EmployeeHome extends StatelessWidget {
                     "Transmite videos y audios sin necesidad de descargarlos. Reproduce tu contenido multimedia.",
                 imageUrl: "assets/playimage.jpg",
                 txtbtn: 'Mirar',
+                function: () {
+                  employeeProvider.updateSelectedIndex(2);
+                },
               ),
               const SizedBox(height: 30),
               InfoCard(
@@ -32,6 +37,9 @@ class EmployeeHome extends StatelessWidget {
                     "Organiza y guarda tus fotos en álbumes digitales accesibles desde cualquier dispositivo.",
                 imageUrl: "assets/photo_album.png",
                 txtbtn: "Ingresar",
+                function: () {
+                  employeeProvider.updateSelectedIndex(3);
+                },
               ),
               const SizedBox(height: 30),
               InfoCard(
@@ -41,6 +49,9 @@ class EmployeeHome extends StatelessWidget {
                     "Gestiona, sube y comparte archivos con tus compañeros de trabajo.",
                 imageUrl: "assets/files.png",
                 txtbtn: "Ingresar",
+                function: () {
+                  employeeProvider.updateSelectedIndex(4);
+                },
               )
             ],
           ),
@@ -55,6 +66,7 @@ class InfoCard extends StatelessWidget {
   final String subContenido;
   final String imageUrl;
   final String txtbtn;
+  final VoidCallback function;
 
   const InfoCard({
     super.key,
@@ -63,6 +75,7 @@ class InfoCard extends StatelessWidget {
     required this.subContenido,
     required this.imageUrl,
     required this.txtbtn,
+    required this.function,
   });
 
   final Size size;
@@ -76,7 +89,7 @@ class InfoCard extends StatelessWidget {
       ),
       color: Colors.white,
       child: InkWell(
-        onTap: () {},
+        onTap: function,
         borderRadius: BorderRadius.circular(10),
         child: Column(
           children: [
@@ -107,7 +120,7 @@ class InfoCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   SizedBox(
                       child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: function,
                     label: Text(
                       txtbtn,
                       style: const TextStyle(

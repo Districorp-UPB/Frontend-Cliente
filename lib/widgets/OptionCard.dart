@@ -28,7 +28,20 @@ class OptionCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 60, color: Theme.of(context).primaryColor),
+              ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      colors: [
+                        Color.fromRGBO(235, 2, 56, 1),
+                        Color.fromRGBO(120, 50, 220, 1)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ).createShader(bounds);
+                  },
+                  child: 
+              Icon(icon, size: 60, color: Colors.white,),
+              ),
               const SizedBox(height: 10),
               Text(title, style: const TextStyle(fontSize: 20)),
             ],

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-class VideoCard extends StatelessWidget {
+class AlbumCard extends StatelessWidget {
   final String title;
   final String imageUrl;
 
-  const VideoCard({required this.title, required this.imageUrl});
+  const AlbumCard({required this.title, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      
       shape: RoundedRectangleBorder(
+        
         borderRadius: BorderRadius.circular(10),
       ),
       elevation: 4,
+      
       child: Stack(
         children: [
           ClipRRect(
@@ -24,7 +27,7 @@ class VideoCard extends StatelessWidget {
               height: double.infinity,
             ),
           ),
-          // Nombre del video en la parte inferior
+          // Nombre del album en la parte inferior
           Positioned(
             top: 0,
             left: 0,
@@ -45,8 +48,7 @@ class VideoCard extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        overflow: TextOverflow
-                            .ellipsis, // Para manejar el texto largo
+                        overflow: TextOverflow.ellipsis, // Para manejar el texto largo
                       ),
                       maxLines: 1, // Asegura que no crezca verticalmente
                     ),
@@ -82,32 +84,6 @@ class VideoCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromRGBO(235, 2, 56, 1),
-                    Color.fromRGBO(120, 50, 220, 1)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  // Acción del botón de play
-                },
-                icon: Icon(
-                  Icons.play_circle_fill,
-                  color: Colors.white,
-                  size: 45,
-                ),
               ),
             ),
           ),

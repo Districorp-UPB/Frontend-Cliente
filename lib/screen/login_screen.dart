@@ -65,13 +65,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 130,
                 ),
                 const SizedBox(height: 10),
+                ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      colors: [
+                        Color.fromRGBO(235, 2, 56, 1),
+                        Color.fromRGBO(120, 50, 220, 1)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ).createShader(bounds);
+                  },
+                  child: 
                 const Text(
                   'Iniciar Sesión',
                   style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
+                    fontSize: 26,
+                    color: Color.fromARGB(255, 194, 51, 51),
                     fontWeight: FontWeight.bold,
                   ),
+                ),
                 ),
                 const SizedBox(height: 20),
                 CustomInput(
