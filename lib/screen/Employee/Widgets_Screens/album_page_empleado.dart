@@ -46,7 +46,7 @@ class _EmployeeAlbumState extends State<EmployeeAlbum> {
             child: SearchBarCustom(
                 controller: searchController,
                 onChanged: filterAlbum,
-                hintext: "Buscar videos...")),
+                hintext: "Buscar fotos...")),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16),

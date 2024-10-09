@@ -38,6 +38,8 @@ dependencies:
   http: ^1.2.0
   get: ^4.6.6
   provider: ^6.1.2
+  shared_preferences: ^2.3.2
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +69,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/   # Aquí defines la carpeta assets entera, para poder referenciar todas las imágenes dentro.
-    - assets/logo_3.png  # Puedes listar la imagen o solo dejar la carpeta, si hay múltiples imágenes.
+    - assets/logo/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

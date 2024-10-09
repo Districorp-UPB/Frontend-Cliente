@@ -1,5 +1,4 @@
 import 'package:districorp/constant/sizes.dart';
-import 'package:districorp/widgets/Employee_widgets/album_card.dart';
 import 'package:districorp/widgets/Employee_widgets/file_card.dart';
 import 'package:districorp/widgets/SearchBarCustom.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +46,7 @@ class _EmployeeFilesState extends State<EmployeeFiles> {
             child: SearchBarCustom(
                 controller: searchController,
                 onChanged: filterAlbum,
-                hintext: "Buscar videos...")),
+                hintext: "Buscar archivos...")),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16),

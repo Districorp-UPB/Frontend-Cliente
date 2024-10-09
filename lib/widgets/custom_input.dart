@@ -22,6 +22,7 @@ class CustomInput extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: Icon(icon),
+        labelText: hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),

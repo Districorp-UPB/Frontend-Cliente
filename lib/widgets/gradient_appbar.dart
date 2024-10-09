@@ -1,14 +1,15 @@
+import 'package:districorp/constant/images.dart';
 import 'package:flutter/material.dart';
 
 class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
+  final String? title;
   final Color titleColor;
   final List<Widget>? actions; // Add the actions parameter
   final bool implyLeading;
 
   const GradientAppBar({
     super.key, 
-    required this.title,
+    this.title,
     this.titleColor = Colors.white,
     this.actions, // Initialize the actions parameter
     required this.implyLeading, 
@@ -16,11 +17,23 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return AppBar(
       automaticallyImplyLeading: implyLeading,
-      title: Text(
-        title,
-        style: TextStyle(color: titleColor),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            cLogoLateral,
+            height: size.height * 0.065
+          ),
+          title != null ? Text(
+            title!,
+            style: TextStyle(color: titleColor),
+          ) :
+          Text("")
+        ],
       ),
       actions: actions, // Use the actions in the AppBar
       iconTheme: IconThemeData(color: titleColor),

@@ -1,5 +1,5 @@
 import 'package:districorp/constant/sizes.dart';
-import 'package:districorp/providers/Emp_dashboard_provider.dart';
+import 'package:districorp/controller/providers/Emp_dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

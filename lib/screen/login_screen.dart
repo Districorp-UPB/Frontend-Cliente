@@ -1,8 +1,13 @@
+import 'package:districorp/controller/providers/token_provider.dart';
+import 'package:districorp/controller/services/api.dart';
+import 'package:districorp/screen/admin/Panel_principal_admin.dart';
+import 'package:districorp/widgets/formulario_select.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import '../widgets/gradient_appbar.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/custom_button.dart';
-import '../services/api_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,30 +17,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  ApiController apiController = ApiController();
 
   // Inicializamos una variable para controlar la visibilidad de la contraseña
   bool visiIcon = false;
-
-  void _login() async {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    if (email.isNotEmpty && password.isNotEmpty) {
-      bool success = await ApiService.login(email, password);
-      if (success) {
-        // para manejar en caso de login exitoso
-        print("Login Exitoso");
-      } else {
-        // para manejar  errrores de login
-        print("Login Fallido");
-      }
-    } else {
-      print("Por favor ingresa todos los campos");
-    }
-  }
-
 
   visibilityIcon() {
     setState(() {
@@ -43,14 +28,13 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: const GradientAppBar(
         implyLeading: false,
-        title: 'Bienvenido',
         titleColor: Colors.white,
       ),
       body: Center(
@@ -76,51 +60,67 @@ class _LoginScreenState extends State<LoginScreen> {
                       end: Alignment.bottomRight,
                     ).createShader(bounds);
                   },
-                  child: 
-                const Text(
-                  'Iniciar Sesión',
-                  style: TextStyle(
-                    fontSize: 26,
-                    color: Color.fromARGB(255, 194, 51, 51),
-                    fontWeight: FontWeight.bold,
+                  child: const Text(
+                    'Iniciar Sesión',
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: Color.fromARGB(255, 194, 51, 51),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
                 ),
                 const SizedBox(height: 20),
                 CustomInput(
                   hintText: 'Correo Electrónico',
                   icon: Icons.email,
-                  controller: _emailController,
+                  controller: apiController.emailController,
+                ),
+                const SizedBox(height: 20),
+                FormularioSelect(
+                  opciones: const ["Usuario", "Empleado", "Administrador"],
+                  controller: apiController.tipoRolController,
+                  texto: "Tipo de Rol",
+                  icono: const Icon(Icons.groups),
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                    controller: _passwordController,
-                    obscureText: visiIcon ? false : true,
-                    decoration: InputDecoration(
+                  controller: apiController.passwordController,
+                  obscureText: visiIcon ? false : true,
+                  decoration: InputDecoration(
                       hintText: 'Contraseña',
                       prefixIcon: Icon(Icons.lock),
+                      labelText: "Contraseña",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       suffixIcon: IconButton(
-                    splashColor: Colors.transparent,
-                    onPressed: () {
-                      visibilityIcon();
-                    },
-                    icon: visiIcon
-                        ? const Icon(
-                            Icons.remove_red_eye_sharp,
-                          )
-                        : const Icon(Icons.visibility_off))
-                    ),
-                    
-                  ),
+                          splashColor: Colors.transparent,
+                          onPressed: () {
+                            visibilityIcon();
+                          },
+                          icon: visiIcon
+                              ? const Icon(
+                                  Icons.remove_red_eye_sharp,
+                                )
+                              : const Icon(Icons.visibility_off))),
+                ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: CustomButton(
                     text: 'Iniciar Sesión',
-                    onPressed: _login,
+                    onPressed: () async {
+                      try {
+                        // Llamar a la función de registro en el AuthController
+                        dynamic result = await apiController.loginU();
+                        if (result != {}) {
+                          tokenProvider.setTokenU(result['token']);
+                          Get.to(() => MainPanelPage());
+                        }
+                      } catch (e) {
+                        print("Error al registrar usuario: $e");
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 10),
