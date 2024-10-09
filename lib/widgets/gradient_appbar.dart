@@ -17,17 +17,12 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return AppBar(
       automaticallyImplyLeading: implyLeading,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.asset(
-            cLogoLateral,
-            height: size.height * 0.065
-          ),
           title != null ? Text(
             title!,
             style: TextStyle(color: titleColor),
