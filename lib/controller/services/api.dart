@@ -133,76 +133,72 @@ class ApiController {
   final TextEditingController passwordNewController = TextEditingController();
   final TextEditingController rolNewController = TextEditingController();
   
-  Future<int?> registrarUsuarioDistri(String token) async {
-    try {
-      
-      Map<String, String> rolesMap = {
-        "Administrador": "Admin",
-        "Empleado": "Employee",
-        "Usuario": "User",
-      };
+Future<int?> registrarUsuarioDistri(String token, String name, String surname, String email, String phone, String document, String password, String role) async {
+  try {
+    Map<String, String> rolesMap = {
+      "Administrador": "Admin",
+      "Empleado": "Employee",
+      "Usuario": "User",
+    };
 
-      String? rolTipoConvertido = rolesMap[rolNewController.text];
+    String? rolTipoConvertido = rolesMap[role]; // Utiliza el rol seleccionado
 
-      Map<String, dynamic> regBodyActivo = {
-        "name": nombreNewController.text,
-        "surname": apellidolNewController.text,
-        "email": emailNewController.text,
-        "phone": phoneNewController.text,
-        "document": documentNewController.text,
-        "password": passwordNewController.text,
-        "ou": rolTipoConvertido,
-      };
+    Map<String, dynamic> regBodyActivo = {
+      "name": name,
+      "surname": surname,
+      "email": email,
+      "phone": phone,
+      "document": document,
+      "password": password,
+      "ou": rolTipoConvertido,
+    };
 
-      print(regBodyActivo);
+    print("Cuerpo de la solicitud: $regBodyActivo");
 
-      print("$registerUserUrl$token");
+    var response = await http.post(
+      Uri.parse("$registerUserUrl/$token"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(regBodyActivo),
+    );
 
-      var response = await http.post(
-        Uri.parse("$registerUserUrl/$token"),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(regBodyActivo),
-      );
+    // Imprimir el cuerpo de respuesta y el código de estado
+    print("Respuesta del servidor: ${response.body}");
+    print("Código de respuesta: ${response.statusCode}");
 
+    if (response.statusCode == 200) {
+      print("Usuario registrado");
+      return 200;
+    } else {
+      // Imprimir el mensaje de error si no es 200
       var jsonRegisterResponse = jsonDecode(response.body);
-
-      print(
-          "este es el response $jsonRegisterResponse y el codigo ${response.statusCode}");
-
-      if (response.statusCode == 200) {
-        print("Usuario registrado");
-        return 200;
-      } else if (response.statusCode == 400 && jsonRegisterResponse.containsKey('message')) {
-        handleRegistrationError(
-            response.statusCode, jsonRegisterResponse['message']);
-        throw Exception("Usuario ya existente.");
-      } else if (response.statusCode == 400 && jsonRegisterResponse.containsKey('error')) {
-      // Si existe 'error', maneja el mensaje de error de la API
-      handleRegistrationError(response.statusCode, jsonRegisterResponse['error']);
-      throw Exception("Error proporcionado por la API: ${jsonRegisterResponse['error']}");
-      } else {
-        throw Exception("Error desconocido al registrar usuario.");
-      }
-    } catch (e) {
-      print("Error al realizar la peticion: $e");
+      print("Error al registrar usuario: ${jsonRegisterResponse}");
+      handleRegistrationError(response.statusCode, jsonRegisterResponse['message'] ?? jsonRegisterResponse['error']);
+      return response.statusCode; // Retorna el código de error
     }
-    return null;
+  } catch (e) {
+    print("Error al realizar la petición: $e");
   }
-  
-  // Controladores de texto de Inicio de Sesion y Registro
-  final TextEditingController nombreActualizarController = TextEditingController();
-  final TextEditingController apellidolActualizarController = TextEditingController();
-  final TextEditingController emailActualizarController = TextEditingController();
-  final TextEditingController phoneActualizarController = TextEditingController();
-  final TextEditingController documentActualizarController = TextEditingController();
-  final TextEditingController rolActualizarController = TextEditingController();
-  
-  Future<int?> actualizarUsuarioDistri() async {
-    try {
-    
+  return null;
+}
 
+  
+   // Controladores de texto de Actualizar Usuario por parte del Administrador
+  final TextEditingController nombreActualizarController =
+      TextEditingController();
+  final TextEditingController apellidolActualizarController =
+      TextEditingController();
+  final TextEditingController emailActualizarController =
+      TextEditingController();
+  final TextEditingController phoneActualizarController =
+      TextEditingController();
+  final TextEditingController documentActualizarController =
+      TextEditingController();
+  final TextEditingController rolActualizarController = TextEditingController();
+
+  Future<int?> actualizarUsuarioDistri(String token) async {
+    try {
       Map<String, dynamic> regBodyActivo = {
         "name": nombreActualizarController.text,
         "surname": apellidolActualizarController.text,
@@ -210,13 +206,12 @@ class ApiController {
         "phone": phoneActualizarController.text,
         "document": documentActualizarController.text,
         "ou": rolActualizarController.text,
-
       };
 
       print(regBodyActivo);
 
       var response = await http.post(
-        Uri.parse(actualizarUserUrl),
+        Uri.parse("$actualizarUserUrl/$token"),
         headers: {
           "Content-Type": "application/json",
         },
@@ -231,14 +226,18 @@ class ApiController {
       if (response.statusCode == 200) {
         print("Usuario actualizado");
         return 200;
-      } else if (response.statusCode == 400 && jsonRegisterResponse.containsKey('message')) {
+      } else if (response.statusCode == 400 &&
+          jsonRegisterResponse.containsKey('message')) {
         handleRegistrationError(
             response.statusCode, jsonRegisterResponse['message']);
         throw Exception("Usuario ya existente.");
-      } else if (response.statusCode == 400 && jsonRegisterResponse.containsKey('error')) {
-      // Si existe 'error', maneja el mensaje de error de la API
-      handleRegistrationError(response.statusCode, jsonRegisterResponse['error']);
-      throw Exception("Error proporcionado por la API: ${jsonRegisterResponse['error']}");
+      } else if (response.statusCode == 400 &&
+          jsonRegisterResponse.containsKey('error')) {
+        // Si existe 'error', maneja el mensaje de error de la API
+        handleRegistrationError(
+            response.statusCode, jsonRegisterResponse['error']);
+        throw Exception(
+            "Error proporcionado por la API: ${jsonRegisterResponse['error']}");
       } else {
         throw Exception("Error desconocido al actualizar usuario.");
       }
@@ -247,52 +246,52 @@ class ApiController {
     }
     return null;
   }
+Future<List<Map<String, dynamic>>> obtenerUsuariosDistri(String rol, String token) async {
+  try {
+    var response = await http.post(
+      Uri.parse("$obtenerUserUrl/$rol/$token"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
 
-  Future<Map<String, dynamic>> obtenerUsuariosDistri(String rol, String token) async {
-    try {
-      
- 
+    // Print the response body for debugging
+    print("Cuerpo de la respuesta: ${response.body}");
 
-      var response = await http.post(
-        Uri.parse("$obtenerUserUrl/$rol/$token"),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      );
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
 
-      var jsonRegisterResponse = jsonDecode(response.body);
-
-      print(
-          "este es el response $jsonRegisterResponse y el codigo ${response.statusCode}");
-
-      if (response.statusCode == 200) {
-        print("Usuario obtenidos");
-        return jsonRegisterResponse;
+      // Ensure we are returning the users list correctly
+      if (jsonResponse['users'] is List) {
+        return List<Map<String, dynamic>>.from(jsonResponse['users']);
       } else {
-        throw Exception("Error desconocido al obtener usuarios.");
+        throw Exception("No se encontraron usuarios en la respuesta.");
       }
-    } catch (e) {
-      print("Error al realizar la peticion: $e");
+    } else {
+      throw Exception("Error desconocido al obtener usuarios. Código: ${response.statusCode}");
     }
-    return {};
+  } catch (e) {
+    print("Error al realizar la petición: $e");
   }
+  return [];
+}
 
-  Future<int?> eliminarUsuariosDistri(String email, String rol) async {
+
+
+  //Eliminar un usuario por parte del admin
+  Future<int?> eliminarUsuariosDistri(
+      String email, String rol, String token) async {
     try {
-      
- 
       Map<String, dynamic> regBody = {
         "email": email,
         "ou": rol,
       };
 
-      var response = await http.post(
-        Uri.parse("/"),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(regBody)
-      );
+      var response = await http.post(Uri.parse("$eliminarUserUrl/$token"),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(regBody));
 
       var jsonRegisterResponse = jsonDecode(response.body);
 
@@ -310,12 +309,33 @@ class ApiController {
     }
     return null;
   }
+    // Obtener Datos Personales de un empleado
+  Future<Map<String, dynamic>> obtenerDatosPersonalesDistri(
+      String email) async {
+    try {
+      var response = await http.get(
+        Uri.parse("$obtenerDatosPersonalesUrl/$email"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
 
+      var jsonRegisterResponse = jsonDecode(response.body);
 
+      print(
+          "este es el response $jsonRegisterResponse y el codigo ${response.statusCode}");
 
-
-
-
+      if (response.statusCode == 200) {
+        print("Datos Personales Obtenidos");
+        return jsonRegisterResponse['usuario'];
+      } else {
+        throw Exception("Error desconocido al obtener datos personales.");
+      }
+    } catch (e) {
+      print("Error al realizar la peticion: $e");
+    }
+    return {};
+  }
 
 
 
