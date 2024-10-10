@@ -1,7 +1,12 @@
+// lib/widgets/Employee_files.dart
+import 'dart:typed_data';
 import 'package:districorp/constant/sizes.dart';
+import 'package:districorp/controller/services/api.dart';
 import 'package:districorp/widgets/Employee_widgets/file_card.dart';
 import 'package:districorp/widgets/SearchBarCustom.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeeFiles extends StatefulWidget {
   const EmployeeFiles({super.key});
@@ -18,6 +23,7 @@ class _EmployeeFilesState extends State<EmployeeFiles> {
     {"title": "Documento Parcial 3", "image": "assets/texto3.txt"},
   ];
   List<Map<String, String>> filteredAlbums = [];
+  final ApiController apiController = ApiController(); // Crear instancia de ApiController
 
   @override
   void initState() {
@@ -37,16 +43,56 @@ class _EmployeeFilesState extends State<EmployeeFiles> {
     });
   }
 
+  // Función para seleccionar y subir un archivo
+  Future<void> _pickAndUploadFile() async {
+    // Usar FilePicker para seleccionar un archivo
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.any, // Puedes ajustar esto según tus necesidades
+    );
+
+    if (result != null) {
+      Uint8List? fileBytes = result.files.single.bytes;
+      String fileName = result.files.single.name;
+
+      if (fileBytes != null) {
+        // Obtener el token desde SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('token');
+
+        if (token != null) {
+          // Subir archivo al servidor usando la instancia de ApiController
+          int? responseCode = await apiController.subirArchivoEmpleadoDistri(token, fileBytes, fileName);
+          if (responseCode == 200) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Archivo subido exitosamente')),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error al subir el archivo')),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Token no encontrado')),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-            padding: const EdgeInsets.all(16),
-            child: SearchBarCustom(
-                controller: searchController,
-                onChanged: filterAlbum,
-                hintext: "Buscar archivos...")),
+          padding: const EdgeInsets.all(16),
+          child: SearchBarCustom(
+            controller: searchController,
+            onChanged: filterAlbum,
+            hintext: "Buscar archivos...",
+          ),
+        ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -70,56 +116,49 @@ class _EmployeeFilesState extends State<EmployeeFiles> {
         ),
         Column(
           children: [
-            Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(235, 2, 56, 1),
-                        Color.fromRGBO(120, 50, 220, 1)
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      // Acción del botón de play
-                    },
-                    icon: Icon(
-                      Icons.upload_file_sharp,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  ),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromRGBO(235, 2, 56, 1),
+                    Color.fromRGBO(120, 50, 220, 1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return LinearGradient(
-                      colors: [
-                        Color.fromRGBO(235, 2, 56, 1),
-                        Color.fromRGBO(120, 50, 220, 1)
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ).createShader(bounds);
-                  },
-                  child: Text(
-                    "Subir Archivo",
-                    style: TextStyle(
-                      color: Colors
-                          .white, // Esto es necesario aunque será cubierto por el shader
-                      fontSize: cSubcontenidoSize,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-              ],
+              ),
+              child: IconButton(
+                onPressed: _pickAndUploadFile, // Llama a la función para subir el archivo
+                icon: Icon(
+                  Icons.upload_file_sharp,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+            ),
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  colors: [
+                    Color.fromRGBO(235, 2, 56, 1),
+                    Color.fromRGBO(120, 50, 220, 1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ).createShader(bounds);
+              },
+              child: Text(
+                "Subir Archivo",
+                style: TextStyle(
+                  color: Colors.white, // Esto es necesario aunque será cubierto por el shader
+                  fontSize: cSubcontenidoSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

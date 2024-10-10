@@ -15,3 +15,8 @@ const obtenerDatosPersonalesUrl = "$iPv4/api/usuario";
 
 const registrationUrl = "$iPv4:80/api/users/newUser";
 const eliminarUserUrl = "$iPv4/api/delete";
+
+//Urls de subir
+const subirFotoUrl = "$iPv4/api/fileserver/grpc/upload/imagen";
+const subirVideoUrl = "$iPv4/api/fileserver/grpc/upload/video";
+const subirArchivoUrl = "$iPv4/api/fileserver/grpc/upload/archivo";

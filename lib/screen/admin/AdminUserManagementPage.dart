@@ -38,26 +38,33 @@ class _AdminUserManagementPageState extends State<AdminUserManagementPage> {
     });
   }
 
-  Future<void> fetchUsers() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
+Future<void> fetchUsers() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token');
 
-    String role = "User"; 
+  if (token != null) {
+    // Fetch users with role 'User'
+    var usersResponse = await apiController.obtenerUsuariosDistri("User", token);
 
-    if (token != null) {
-      var response = await apiController.obtenerUsuariosDistri(role, token);
-      if (response.isNotEmpty) {
-        setState(() {
-          users = response; // Directly set the response as users
-          filteredUsers = users; // Initialize filtered users
-        });
-      } else {
-        print('No users found in response.');
-      }
+    // Fetch users with role 'Employee'
+    var employeesResponse = await apiController.obtenerUsuariosDistri("Employee", token);
+
+    // Combine both lists of users
+    var combinedUsers = [...usersResponse, ...employeesResponse];
+
+    if (combinedUsers.isNotEmpty) {
+      setState(() {
+        users = combinedUsers; // Directly set the combined response as users
+        filteredUsers = users; // Initialize filtered users
+      });
     } else {
-      print('Token is null.');
+      print('No users found in response.');
     }
+  } else {
+    print('Token is null.');
   }
+}
+
 
   Future<void> deleteUser(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

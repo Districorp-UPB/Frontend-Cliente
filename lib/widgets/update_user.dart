@@ -29,10 +29,16 @@ class UpdateUserPage extends StatefulWidget {
 class _UpdateUserPageState extends State<UpdateUserPage> {
   final ApiController apiController = ApiController();
 
+  // Role mapping
+  final Map<String, String> roleMapping = {
+    "Administrador": "Admin",
+    "Empleado": "Employee",
+    "Usuario": "User",
+  };
+
   @override
   void initState() {
     super.initState();
-    // Initialize text controllers with received values
     apiController.nombreActualizarController.text = widget.name;
     apiController.apellidolActualizarController.text = widget.surname;
     apiController.emailActualizarController.text = widget.email;
@@ -53,10 +59,10 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
         implyLeading: true,
         title: 'Actualizar Usuario',
       ),
-      resizeToAvoidBottomInset: true, // Allow body to resize
+      resizeToAvoidBottomInset: true, 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView( // Wrap in SingleChildScrollView
+        child: SingleChildScrollView(
           child: Column(
             children: [
               CustomInput(
@@ -98,16 +104,16 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
               CustomButton(
                 text: 'Actualizar',
                 onPressed: () async {
-                  // Get token before updating
                   String? token = await getToken();
                   if (token != null) {
-                    final result = await apiController.actualizarUsuarioDistri(token);
+                    // Map user-friendly role to API role before sending
+                    String selectedRole = roleMapping[apiController.rolActualizarController.text] ?? "User"; // Default to 'User' if no match
+
+                    final result = await apiController.actualizarUsuarioDistri(token, selectedRole); // Pass the mapped role
                     if (result != null && result == 200) {
-                      // Show success message
                       print('Usuario actualizado correctamente');
                       Navigator.pop(context); // Return to the previous page
                     } else {
-                      // Handle error
                       print('Error al actualizar el usuario');
                     }
                   } else {
